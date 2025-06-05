@@ -75,14 +75,4 @@ Models will be evaluated using:
 
 This evaluation ensures that the model is both robust and interpretable.
 
----
 
-### Deliverables
-
-* `proposal.md` and code in GitHub repository
-* Trained model (`best_crop_model.pkl`) and label encoder
-* README with usage instructions and dataset information
-* 5-minute video presentation
-* Submission of GitHub URL and video link via Moodle
-
----
