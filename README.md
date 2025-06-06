@@ -1,64 +1,106 @@
-# PML Final Project – Learning What to Grow: Crop Classification from NPK and pH Levels
-### Created by: Luís Pinto Coelho (19724)  
-### Professor Manuel Lameiras de Figueiredo Campagnolo  
-### MSc in Green Data Science, ISA, Portugal  
+# Project Proposal: *Learning What to Grow – Crop Classification from NPK and pH Levels*
+
+**Author:** Luís Pinto Coelho  
+**Student No.:** 19724  
+**Course:** Machine Learning – Mestrado em Green Data Science  
+**Academic Year:** 2024/2025
 
 ---
 
-**Project category:** Multiclass classification (Tabular data)
+## 🧠 What is the goal of your project?
+
+To build a multi-class machine learning model that helps farmers determine the optimal crop to grow in a given field based on easily measurable soil metrics: **Nitrogen (N)**, **Phosphorous (P)**, **Potassium (K)**, and **pH**.
+
+This tool aims to **automate and simplify decision-making** for farmers, promoting **data-driven agriculture** that maximizes yield and resource efficiency.
 
 ---
 
-## Information
+## 🌱 Why is it important?
+
+- **Soil testing is expensive**: Farmers may not afford to measure many variables.
+- **Crop selection is critical**: Wrong decisions lead to poor yield and economic loss.
+- This tool contributes to **precision farming**, sustainability, and **optimised land usage**.
 
 ---
 
-### 🔎 Problem Statement: What problem will you be investigating? Why is it interesting?
+## 📦 What dataset are you using?
 
-This project tackles the problem of identifying the most suitable crop for a given field based on basic soil characteristics: nitrogen (N), phosphorus (P), potassium (K), and pH level. These are essential indicators of soil fertility, but measuring them can be costly and time-consuming. A machine learning solution to this problem can help farmers select the ideal crop to grow, optimizing yield and minimizing environmental impact.
-
-This challenge is both practical and relevant. It supports more informed, data-driven decision-making in agriculture while reducing dependency on extensive lab analysis. It also aligns with the goals of sustainable farming and precision agriculture, making it a highly meaningful application of machine learning.
-
----
-
-### ⚠️ Challenges: What are the challenges of this project?
-
-1. **Multiclass classification complexity**: The dataset includes 22 different crop classes, which increases the complexity of classification compared to binary problems.  
-2. **Feature similarity**: Some crops require similar soil conditions, making their separation difficult based on only four features.  
-3. **Overfitting risk**: Due to the small number of input features and class imbalance, the model might overfit.  
-4. **Model interpretability**: Understanding *why* a crop is recommended requires using advanced interpretability techniques beyond accuracy metrics.  
+- **Source**: Kaggle → [`mohamedmostafa259/soil-measures`](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures)
+- **Format**: Tabular CSV
+- **Features**:
+  - `N`, `P`, `K` — soil nutrient levels
+  - `pH` — soil acidity
+  - `crop` — optimal crop label (22 classes)
 
 ---
 
-### 🌾 Dataset: What dataset are you using? How do you plan to collect it?
+## 🔍 What challenges do you expect?
 
-The dataset used is the **Soil Measures Dataset**, available on [Kaggle](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures). It contains 1988 samples with four input features (`n`, `p`, `k`, `ph`) and a categorical target (`crop`). Each row corresponds to an optimal crop for a particular soil composition. The dataset is downloaded programmatically using the `kagglehub` library, ensuring reproducibility and version control.
-
----
-
-### 🤖 Method or Algorithm: What method or algorithm are you proposing?
-
-Several supervised learning algorithms are tested and compared:
-
-- **Data preprocessing**: Label encoding for the target, feature scaling when appropriate, and stratified train-test split.
-- **Model training**: Logistic Regression, Random Forest, K-Nearest Neighbors, and SVM are evaluated using pipelines.
-- **Model tuning**: Hyperparameters for the Random Forest model are optimized using `GridSearchCV`.
-- **Validation**: 5-fold cross-validation is applied to the best-performing pipeline to ensure robustness.
-
-All models are implemented in modular pipelines using `scikit-learn`.
+1. **Multi-class classification** with 22 different crop types.
+2. **Small number of features** (only 4), making high accuracy difficult.
+3. **Potential overlap** between crop preferences.
+4. **Need for interpretability** in real-world decision support.
 
 ---
 
-### 📊 Evaluation: How will you evaluate your results? What kind of analysis will you use to evaluate and/or compare your results?
+## 🔧 How will you build the solution?
 
-Model evaluation includes:
+### 🧼 Data Preparation
+- Clean and validate column names
+- Encode target (`crop`) using `LabelEncoder`
+- Stratified train-test split (80/20)
+- Use `StandardScaler` when needed
 
-- **Accuracy** and **macro F1 score** on the test set.
-- **Cross-validation** score (5-fold) to evaluate generalization.
-- **Confusion matrices** (both raw and normalized) to analyze misclassifications.
-- **Learning curves** to assess underfitting/overfitting behavior.
-- **Permutation Feature Importance** to identify which features are most predictive.
-- **SHAP plots** for global (summary) and local (waterfall) interpretability, allowing model predictions to be explained transparently.
+### 🤖 Models Compared
+- Logistic Regression
+- K-Nearest Neighbors (KNN)
+- Random Forest
+- Support Vector Machine (SVM)
+
+### 🛠️ Model Pipeline
+- Modular `sklearn.pipeline.Pipeline` architecture
+- Hyperparameter tuning with `GridSearchCV` for Random Forest
+- Best model saved with `joblib`
 
 ---
 
+## 📊 How will you evaluate it?
+
+### Metrics:
+- Accuracy
+- Macro F1 Score
+- Confusion Matrix (Raw + Normalized)
+- Cross-validation (CV=5)
+- Learning Curves
+- **Permutation Feature Importance**
+
+### Note:
+> Advanced interpretability techniques like **SHAP** were considered but ultimately not used in the final version due to compatibility issues and limited feature complexity.
+
+---
+
+## ✅ What results do you expect?
+
+- Achieve classification accuracy **above 90%**, as dataset is clean and balanced.
+- Confirm **key predictive variable** (likely Nitrogen or pH).
+- Deliver a **fully functional prototype** for crop recommendation from soil input.
+
+---
+
+## 📁 Deliverables
+
+- Python notebook + script
+- Trained model (`.pkl`) and label encoder
+- Report (PDF)
+- `README.md` for GitHub with visualizations and demo predictions
+
+---
+
+## 🏁 Final Model Summary
+
+- Best model: **Random Forest Classifier**
+- Accuracy: ~**0.96**
+- Interpretation: **Permutation Feature Importance**
+- Deployment-ready function: `predict_crop(n, p, k, ph)`
+
+---
