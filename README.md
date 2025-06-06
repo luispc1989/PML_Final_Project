@@ -1,78 +1,64 @@
-# Learning What to Grow: Crop Classification from NPK and pH Levels
-
-### Created by: Luís Pinto Coelho (19724)
-
-### Professor Manuel Campagnolo
-
-### MSc in Green Data Science, ISA, Portugal
+# PML Final Project – Learning What to Grow: Crop Classification from NPK and pH Levels
+### Created by: Luís Pinto Coelho (19724)  
+### Professor Manuel Lameiras de Figueiredo Campagnolo  
+### MSc in Green Data Science, ISA, Portugal  
 
 ---
 
-## Project Proposal – Practical Machine Learning 2024/2025
-
-### Project category: Tabular Data – Multi-class Classification
+**Project category:** Multiclass classification (Tabular data)
 
 ---
 
-### Problem Statement
-
-Farmers often struggle to determine which crop to plant in a given season due to limited access to soil analysis tools. Understanding the chemical composition of soil—namely nitrogen (N), phosphorous (P), potassium (K), and pH—can greatly influence the success of agricultural production. However, such data is costly to collect at scale. This project aims to use machine learning to predict the most suitable crop based on these four key soil parameters, enabling more sustainable and data-driven decisions in agriculture. By learning from existing labeled soil profiles, the model can support efficient and ecologically conscious crop planning.
+## Information
 
 ---
 
-### Challenges
+### 🔎 Problem Statement: What problem will you be investigating? Why is it interesting?
 
-1. **Limited feature set**: With only four input variables, the model must be effective without rich context.
-2. **Class imbalance**: The dataset contains multiple crop categories with varying frequency.
-3. **Generalization**: Ensuring the model can generalize to new, unseen soil profiles.
-4. **Interpretability**: Making the model's reasoning accessible to non-technical users, such as farmers or agronomists.
+This project tackles the problem of identifying the most suitable crop for a given field based on basic soil characteristics: nitrogen (N), phosphorus (P), potassium (K), and pH level. These are essential indicators of soil fertility, but measuring them can be costly and time-consuming. A machine learning solution to this problem can help farmers select the ideal crop to grow, optimizing yield and minimizing environmental impact.
 
----
-
-### Dataset
-
-The project uses the [Soil Measures Dataset](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures) from Kaggle. It includes 1985 soil samples with the following columns:
-
-* `N`: Nitrogen content ratio in the soil
-* `P`: Phosphorous content ratio
-* `K`: Potassium content ratio
-* `pH`: Acidity level of the soil
-* `crop`: Label indicating the optimal crop (target variable)
-
-This dataset is publicly available and sufficiently annotated for supervised classification tasks.
+This challenge is both practical and relevant. It supports more informed, data-driven decision-making in agriculture while reducing dependency on extensive lab analysis. It also aligns with the goals of sustainable farming and precision agriculture, making it a highly meaningful application of machine learning.
 
 ---
 
-### Method or Algorithm
+### ⚠️ Challenges: What are the challenges of this project?
 
-The methodology includes:
-
-* Data cleaning, outlier detection (via Z-score), and encoding
-* Feature scaling and splitting with stratified train/test partitions
-* Model development using:
-
-  * Logistic Regression (linear and polynomial)
-  * Support Vector Machine (SVM)
-  * K-Nearest Neighbors (KNN)
-  * Random Forest
-  * Ensemble Voting Classifier
-* Hyperparameter tuning and cross-validation
-
-The best model will be selected based on evaluation performance and deployed in a prediction function.
+1. **Multiclass classification complexity**: The dataset includes 22 different crop classes, which increases the complexity of classification compared to binary problems.  
+2. **Feature similarity**: Some crops require similar soil conditions, making their separation difficult based on only four features.  
+3. **Overfitting risk**: Due to the small number of input features and class imbalance, the model might overfit.  
+4. **Model interpretability**: Understanding *why* a crop is recommended requires using advanced interpretability techniques beyond accuracy metrics.  
 
 ---
 
-### Evaluation
+### 🌾 Dataset: What dataset are you using? How do you plan to collect it?
 
-Models will be evaluated using:
+The dataset used is the **Soil Measures Dataset**, available on [Kaggle](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures). It contains 1988 samples with four input features (`n`, `p`, `k`, `ph`) and a categorical target (`crop`). Each row corresponds to an optimal crop for a particular soil composition. The dataset is downloaded programmatically using the `kagglehub` library, ensuring reproducibility and version control.
 
-* **Accuracy** and **macro-averaged F1-score**
-* **Confusion matrices** (both raw and normalized)
-* **Cross-validation** (5-fold)
-* **Bootstrap resampling** to compute 95% confidence intervals
-* **Learning curves** to assess generalization behaviour
-* **Feature importance** using permutation methods and SHAP
+---
 
-This evaluation ensures that the model is both robust and interpretable.
+### 🤖 Method or Algorithm: What method or algorithm are you proposing?
 
+Several supervised learning algorithms are tested and compared:
+
+- **Data preprocessing**: Label encoding for the target, feature scaling when appropriate, and stratified train-test split.
+- **Model training**: Logistic Regression, Random Forest, K-Nearest Neighbors, and SVM are evaluated using pipelines.
+- **Model tuning**: Hyperparameters for the Random Forest model are optimized using `GridSearchCV`.
+- **Validation**: 5-fold cross-validation is applied to the best-performing pipeline to ensure robustness.
+
+All models are implemented in modular pipelines using `scikit-learn`.
+
+---
+
+### 📊 Evaluation: How will you evaluate your results? What kind of analysis will you use to evaluate and/or compare your results?
+
+Model evaluation includes:
+
+- **Accuracy** and **macro F1 score** on the test set.
+- **Cross-validation** score (5-fold) to evaluate generalization.
+- **Confusion matrices** (both raw and normalized) to analyze misclassifications.
+- **Learning curves** to assess underfitting/overfitting behavior.
+- **Permutation Feature Importance** to identify which features are most predictive.
+- **SHAP plots** for global (summary) and local (waterfall) interpretability, allowing model predictions to be explained transparently.
+
+---
 
