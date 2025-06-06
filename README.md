@@ -1,106 +1,68 @@
-# Project Proposal: *Learning What to Grow – Crop Classification from NPK and pH Levels*
+# 🌱 PML Final Project — Crop Recommendation with Machine Learning
 
-**Author:** Luís Pinto Coelho  
-**Student No.:** 19724  
-**Course:** Machine Learning – Mestrado em Green Data Science  
-**Academic Year:** 2024/2025
-
----
-
-## 🧠 What is the goal of your project?
-
-To build a multi-class machine learning model that helps farmers determine the optimal crop to grow in a given field based on easily measurable soil metrics: **Nitrogen (N)**, **Phosphorous (P)**, **Potassium (K)**, and **pH**.
-
-This tool aims to **automate and simplify decision-making** for farmers, promoting **data-driven agriculture** that maximizes yield and resource efficiency.
+### Project Category: Tabular Data (Multi-Class Classification)  
+**Student Name:** Luís Pinto Coelho  
+**Student ID:** 19724  
+**Course:** MSc in Green Data Science  
+**Professor:** Manuel Lameiras de Figueiredo Campagnolo  
+**Institution:** Instituto Superior de Agronomia, Universidade de Lisboa  
 
 ---
 
-## 🌱 Why is it important?
+## 🧠 Problem Statement
 
-- **Soil testing is expensive**: Farmers may not afford to measure many variables.
-- **Crop selection is critical**: Wrong decisions lead to poor yield and economic loss.
-- This tool contributes to **precision farming**, sustainability, and **optimised land usage**.
+Agricultural success depends heavily on choosing the right crop for a given field, which in turn is influenced by soil nutrient content and chemical balance. Farmers often rely on experience or trial-and-error to guide crop decisions, but this can lead to inefficiencies or reduced yield. 
 
----
-
-## 📦 What dataset are you using?
-
-- **Source**: Kaggle → [`mohamedmostafa259/soil-measures`](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures)
-- **Format**: Tabular CSV
-- **Features**:
-  - `N`, `P`, `K` — soil nutrient levels
-  - `pH` — soil acidity
-  - `crop` — optimal crop label (22 classes)
+In this project, we aim to develop a **machine learning model** capable of recommending the most suitable crop for a given field, based on basic soil measurements: **nitrogen (N)**, **phosphorous (P)**, **potassium (K)**, and **pH**. This type of decision support system can improve productivity, reduce uncertainty, and support more sustainable agricultural practices, especially for smallholder farmers with limited technical expertise.
 
 ---
 
-## 🔍 What challenges do you expect?
+## ⚠️ Challenges
 
-1. **Multi-class classification** with 22 different crop types.
-2. **Small number of features** (only 4), making high accuracy difficult.
-3. **Potential overlap** between crop preferences.
-4. **Need for interpretability** in real-world decision support.
-
----
-
-## 🔧 How will you build the solution?
-
-### 🧼 Data Preparation
-- Clean and validate column names
-- Encode target (`crop`) using `LabelEncoder`
-- Stratified train-test split (80/20)
-- Use `StandardScaler` when needed
-
-### 🤖 Models Compared
-- Logistic Regression
-- K-Nearest Neighbors (KNN)
-- Random Forest
-- Support Vector Machine (SVM)
-
-### 🛠️ Model Pipeline
-- Modular `sklearn.pipeline.Pipeline` architecture
-- Hyperparameter tuning with `GridSearchCV` for Random Forest
-- Best model saved with `joblib`
+- **Multi-class complexity**: The dataset includes **22 crop types**, which increases the classification difficulty.
+- **Low feature dimensionality**: Only 4 numeric features are available, which places higher demand on model selection and feature engineering.
+- **Ambiguity**: Similar soil profiles may correspond to multiple viable crops, introducing uncertainty in decision boundaries.
+- **Interpretability**: Providing transparent and explainable recommendations is critical for trust and usability.
 
 ---
 
-## 📊 How will you evaluate it?
+## 📊 Dataset
 
-### Metrics:
-- Accuracy
-- Macro F1 Score
-- Confusion Matrix (Raw + Normalized)
-- Cross-validation (CV=5)
-- Learning Curves
-- **Permutation Feature Importance**
+We use the publicly available [`soil_measures.csv`](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures) dataset from Kaggle. It includes **1988 samples**, each with soil measurements (`n`, `p`, `k`, `ph`) and a corresponding optimal crop label (`crop`). 
 
-### Note:
-> Advanced interpretability techniques like **SHAP** were considered but ultimately not used in the final version due to compatibility issues and limited feature complexity.
+The dataset is balanced and clean, requiring only minor preprocessing (standardization of column names, label encoding). Data was downloaded via `kagglehub`.
 
 ---
 
-## ✅ What results do you expect?
+## 🛠️ Method or Algorithm
 
-- Achieve classification accuracy **above 90%**, as dataset is clean and balanced.
-- Confirm **key predictive variable** (likely Nitrogen or pH).
-- Deliver a **fully functional prototype** for crop recommendation from soil input.
+1. **Preprocessing**: 
+   - Clean column names
+   - Encode categorical target using `LabelEncoder`
+   - Normalize input features using `StandardScaler`
+   - Train/test split (80/20) with stratification
+
+2. **Model Training**:  
+   - Compare multiple models: Logistic Regression, K-Nearest Neighbors, SVM, Random Forest  
+   - Integrate each into a `sklearn.pipeline` for clarity and reproducibility
+
+3. **Tuning & Optimization**:  
+   - GridSearchCV for hyperparameter tuning (Random Forest)  
+   - 5-fold cross-validation  
+   - Feature importance via Permutation Importance
+
+---
+
+## 📏 Evaluation
+
+We will use the following metrics to assess performance:
+- **Accuracy**
+- **Macro F1 Score**
+- **Confusion Matrix** (raw and normalized)
+- **Learning Curves**
+- **Cross-validation scores** (mean ± std)
+
+This evaluation strategy provides both quantitative performance and qualitative insight into model behavior. The final model will be saved using `joblib` and include a prediction function for new soil samples.
 
 ---
 
-## 📁 Deliverables
-
-- Python notebook + script
-- Trained model (`.pkl`) and label encoder
-- Report (PDF)
-- `README.md` for GitHub with visualizations and demo predictions
-
----
-
-## 🏁 Final Model Summary
-
-- Best model: **Random Forest Classifier**
-- Accuracy: ~**0.96**
-- Interpretation: **Permutation Feature Importance**
-- Deployment-ready function: `predict_crop(n, p, k, ph)`
-
----
