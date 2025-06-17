@@ -11,58 +11,63 @@
 
 ## 🧠 Problem Statement
 
-Agricultural success depends heavily on choosing the right crop for a given field, which in turn is influenced by soil nutrient content and chemical balance. Farmers often rely on experience or trial-and-error to guide crop decisions, but this can lead to inefficiencies or reduced yield. 
+Agricultural productivity is highly dependent on choosing crops suited to specific soil characteristics. Farmers often base crop selection on heuristics or past experience, which can result in inefficient land use and lower yields. 
 
-In this project, we aim to develop a **machine learning model** capable of recommending the most suitable crop for a given field, based on basic soil measurements: **nitrogen (N)**, **phosphorous (P)**, **potassium (K)**, and **pH**. This type of decision support system can improve productivity, reduce uncertainty, and support more sustainable agricultural practices, especially for smallholder farmers with limited technical expertise.
+This project develops a **machine learning-based decision support system** to recommend the most suitable crops based on key soil metrics: **nitrogen (N)**, **phosphorous (P)**, **potassium (K)**, and **pH**. The tool is aimed at improving agricultural decision-making, particularly for small-scale farmers, by reducing guesswork and promoting more sustainable land use.
 
 ---
 
 ## ⚠️ Challenges
 
-- **Multi-class complexity**: The dataset includes **22 crop types**, which increases the classification difficulty.
-- **Low feature dimensionality**: Only 4 numeric features are available, which places higher demand on model selection and feature engineering.
-- **Ambiguity**: Similar soil profiles may correspond to multiple viable crops, introducing uncertainty in decision boundaries.
-- **Interpretability**: Providing transparent and explainable recommendations is critical for trust and usability.
+- **Multi-class classification with 22 crop classes**, increasing the complexity of model generalization.
+- **Low feature dimensionality** (only 4 inputs), limiting the information available for discrimination.
+- **Overlapping soil profiles**: different crops may thrive in similar conditions, introducing ambiguity.
+- **Dataset limitation**: each sample is labeled with only one "optimal" crop, while in reality, multiple crops may be suitable — an issue addressed through probabilistic prediction.
+- **Model explainability**: interpretability is crucial for practical adoption by end users.
 
 ---
 
 ## 📊 Dataset
 
-We use the publicly available [`soil_measures.csv`](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures) dataset from Kaggle. It includes **1988 samples**, each with soil measurements (`n`, `p`, `k`, `ph`) and a corresponding optimal crop label (`crop`). 
+The project uses the [`soil_measures.csv`](https://www.kaggle.com/datasets/mohamedmostafa259/soil-measures) dataset from Kaggle, containing **2200 samples** with features: `n`, `p`, `k`, `ph`, and the target label `crop`.
 
-The dataset is balanced and clean, requiring only minor preprocessing (standardization of column names, label encoding). Data was downloaded via `kagglehub`.
+The dataset is clean, balanced (100 samples per crop), and well-suited for classification tasks. Preprocessing steps include column normalization, outlier detection, and label encoding. No missing values were found. The data was retrieved using the `kagglehub` package.
 
 ---
 
 ## 🛠️ Method or Algorithm
 
-1. **Preprocessing**: 
-   - Clean column names
-   - Encode categorical target using `LabelEncoder`
-   - Normalize input features using `StandardScaler`
-   - Train/test split (80/20) with stratification
+### Preprocessing:
+- Encode target using `LabelEncoder`
+- Normalize features (`StandardScaler`)
+- Stratified train-test split (80/20)
 
-2. **Model Training**:  
-   - Compare multiple models: Logistic Regression, K-Nearest Neighbors, SVM, Random Forest  
-   - Integrate each into a `sklearn.pipeline` for clarity and reproducibility
+### Modeling:
+- Models tested: 
+  - Logistic Regression (with and without polynomial features)
+  - K-Nearest Neighbors
+  - Support Vector Machine (RBF kernel)
+  - Random Forest
+  - Hard Voting Ensemble (majority vote)
+  - **Soft Voting Ensemble** (for suitability distribution)
 
-3. **Tuning & Optimization**:  
-   - GridSearchCV for hyperparameter tuning (Random Forest)  
-   - 5-fold cross-validation  
-   - Feature importance via Permutation Importance
+- All pipelines built using `scikit-learn`
+
+### Optimization:
+- 5-fold Cross-Validation on final model
+- Permutation Feature Importance
+- Bootstrap analysis for confidence intervals
 
 ---
 
 ## 📏 Evaluation
 
-We will use the following metrics to assess performance:
-- **Accuracy**
-- **Macro F1 Score**
+The models were assessed using:
+- **Accuracy** and **Macro F1 Score**
 - **Confusion Matrix** (raw and normalized)
 - **Learning Curves**
-- **Cross-validation scores** (mean ± std)
+- **Cross-validation mean ± std**
+- **Bootstrap CI for accuracy**
+- **Suitability distribution** via `predict_proba` to reflect crop versatility
 
-This evaluation strategy provides both quantitative performance and qualitative insight into model behavior. The final model will be saved using `joblib` and include a prediction function for new soil samples.
-
----
-
+This multifaceted evaluation framework ensures model robustness and interpretability, addressing both technical performance and agricultural relevance. The final model — a Voting Classifier — is saved with a custom prediction function and a suitability explorer for top crop recommendations.
