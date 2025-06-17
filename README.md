@@ -71,3 +71,8 @@ The models were assessed using:
 - **Suitability distribution** via `predict_proba` to reflect crop versatility
 
 This multifaceted evaluation framework ensures model robustness and interpretability, addressing both technical performance and agricultural relevance. The final model — a Voting Classifier — is saved with a custom prediction function and a suitability explorer for top crop recommendations.
+
+Files in the repositoy:
+
+pml_final_project.ipynb – Jupyter Notebook containing all the code related to model development, along with the final report.
+
